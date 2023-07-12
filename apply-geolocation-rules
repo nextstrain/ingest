@@ -222,7 +222,7 @@ if __name__ == '__main__':
         record = json.loads(record)
 
         try:
-            annotated_values = transform_geolocations(geolocation_rules, [record[field] for field in location_fields])
+            annotated_values = transform_geolocations(geolocation_rules, [record.get(field, '') for field in location_fields])
         except CyclicGeolocationRulesError as e:
             print(e, file=stderr)
             exit(1)
