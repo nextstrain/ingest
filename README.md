@@ -2,10 +2,27 @@
 
 Shared internal tooling for pathogen data ingest.  Used by our individual
 pathogen repos which produce Nextstrain builds.  Expected to be vendored by
-each pathogen repo using `git subtree` (or `git subrepo`).
+each pathogen repo using `git subtree`.
 
 Some tools may only live here temporarily before finding a permanent home in
 `augur curate` or Nextstrain CLI.  Others may happily live out their days here.
+
+## Vendoring
+
+Nextstrain maintained pathogen repos will use `git subtree` to vendor ingest scripts.
+(See discussion on this decision in https://github.com/nextstrain/ingest/issues/3)
+
+First add the latest ingest scripts to the pathogen repo by running:
+
+```
+git subtree add --prefix ingest/vendored https://github.com/nextstrain/ingest HEAD --squash
+```
+
+Any future updates of ingest scripts can be pulled in with:
+
+```
+git subtree pull --prefix ingest/vendored https://github.com/nextstrain/ingest HEAD --squash
+```
 
 ## History
 
