@@ -9,19 +9,20 @@ Some tools may only live here temporarily before finding a permanent home in
 
 ## Vendoring
 
-Nextstrain maintained pathogen repos will use `git subtree` to vendor ingest scripts.
+Nextstrain maintained pathogen repos will use [`git subrepo`](https://github.com/ingydotnet/git-subrepo) to vendor ingest scripts.
 (See discussion on this decision in https://github.com/nextstrain/ingest/issues/3)
 
-First add the latest ingest scripts to the pathogen repo by running:
+If you don't already have `git subrepo` installed, follow the [git subrepo installation instructions](https://github.com/ingydotnet/git-subrepo#installation).
+Then add the latest ingest scripts to the pathogen repo by running:
 
 ```
-git subtree add --prefix ingest/vendored https://github.com/nextstrain/ingest HEAD --squash
+git subrepo clone https://github.com/nextstrain/ingest ingest/vendored
 ```
 
 Any future updates of ingest scripts can be pulled in with:
 
 ```
-git subtree pull --prefix ingest/vendored https://github.com/nextstrain/ingest HEAD --squash
+git subrepo pull ingest/vendored
 ```
 
 ## History
