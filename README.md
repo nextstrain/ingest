@@ -60,6 +60,8 @@ Scripts for supporting ingest workflow automation that don’t really belong in 
 
 - [notify-on-job-fail](notify-on-job-fail) - Send Slack message with details about failed workflow job on GitHub Actions and/or AWS Batch
 - [notify-on-job-start](notify-on-job-start) - Send Slack message with details about workflow job on GitHub Actions and/or AWS Batch
+- [notify-on-record-change](notify-on-recod-change) - Send Slack message with details about line count changes for a file compared to an S3 object's metadata `recordcount`.
+  If the S3 object's metadata does not have `recordcount`, then will attempt to download S3 object to count lines locally, which only supports `xz` compressed S3 objects.
 - [notify-slack](notify-slack) - Send message or file to Slack
 - [s3-object-exists](s3-object-exists) - Used to prevent 404 errors during S3 file comparisons in the notify-* scripts
 - [trigger](trigger) - Triggers downstream GitHub Actions via the GitHub API using repository_dispatch events.
