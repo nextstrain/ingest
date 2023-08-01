@@ -72,6 +72,7 @@ Potential Nextstrain CLI scripts
 
 Potential augur curate scripts
 
+- [apply-geolocation-rules](apply-geolocation-rules) - Applies user curated geolocation rules to NDJSON records
 - [merge-user-metadata](merge-user-metadata) - Merges user annotations with NDJSON records
 - [transform-authors](transform-authors) - Abbreviates full author lists to '<first author> et al.'
 - [transform-field-names](transform-field-names) - Rename fields of NDJSON records
