@@ -58,6 +58,7 @@ approach to "ingest" has been discussed in various internal places, including:
 
 Scripts for supporting ingest workflow automation that don’t really belong in any of our existing tools.
 
+- [notify-on-diff](notify-on-diff) - Send Slack message with diff of a local file and an S3 object
 - [notify-on-job-fail](notify-on-job-fail) - Send Slack message with details about failed workflow job on GitHub Actions and/or AWS Batch
 - [notify-on-job-start](notify-on-job-start) - Send Slack message with details about workflow job on GitHub Actions and/or AWS Batch
 - [notify-on-record-change](notify-on-recod-change) - Send Slack message with details about line count changes for a file compared to an S3 object's metadata `recordcount`.
