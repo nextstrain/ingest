@@ -66,6 +66,8 @@ Scripts for supporting ingest workflow automation that don’t really belong in 
 - [notify-slack](notify-slack) - Send message or file to Slack
 - [s3-object-exists](s3-object-exists) - Used to prevent 404 errors during S3 file comparisons in the notify-* scripts
 - [trigger](trigger) - Triggers downstream GitHub Actions via the GitHub API using repository_dispatch events.
+- [trigger-on-new-data](trigger-on-new-data) - Triggers downstream GitHub Actions if the provided `upload-to-s3` outputs do not contain the `identical_file_message`
+  A hacky way to ensure that we only trigger downstream phylogenetic builds if the S3 objects have been updated.
 
 Potential Nextstrain CLI scripts
 
