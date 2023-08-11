@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-
+"""
+Fetch metadata and nucleotide sequences from NCBI Entrez and output to a GenBank file.
+"""
 import json
 import argparse
 from Bio import SeqIO, Entrez
@@ -14,8 +16,9 @@ MAX_IDS = 100_100
 Entrez.email = "hello@nextstrain.org"
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Annotate sequences using a genbank reference')
-    parser.add_argument('--term', help='Genbank search term. Replace spaces with "+"', default='Hepatitis+B+virus[All+Fields]complete+genome[All+Fields]')
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--term', required=True, type=str,
+        help='Genbank search term. Replace spaces with "+", e.g. "Hepatitis+B+virus[All+Fields]complete+genome[All+Fields]"')
     parser.add_argument('--output', required=True, type=str, help='Output file (Genbank)')
     return parser.parse_args()
 
@@ -35,7 +38,7 @@ def fetch(id_list):
 
 if __name__=="__main__":
     args = parse_args()
-    
+
     genomes = []
     for id_list in get_sequence_ids(args.term):
         genomes.extend(fetch(id_list))
