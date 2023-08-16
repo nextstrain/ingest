@@ -65,8 +65,6 @@ def fetch_from_esearch_history(count, query_key, web_env):
 if __name__=="__main__":
     args = parse_args()
 
-    genomes = []
-    for batch_results in fetch_from_esearch_history(**get_esearch_history(args.term)):
-        genomes.extend(batch_results)
-
-    SeqIO.write(genomes, args.output, "genbank")
+    with open(args.output, "w") as output_handle:
+        for batch_results in fetch_from_esearch_history(**get_esearch_history(args.term)):
+            SeqIO.write(batch_results, output_handle, "genbank")
