@@ -16,11 +16,10 @@ import argparse
 
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--ncbi-taxon-id",
-        help="NCBI Taxon ID.",
-        required=True
-    )
+    parser.add_argument("--ncbi-taxon-id", required=True,
+        help="NCBI Taxon ID. Visit NCBI virus at " +
+             "https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/virus " +
+             "to search for supported taxon IDs.")
     return parser.parse_args()
 
 def build_query_url(ncbi_taxon_id: str):
