@@ -25,9 +25,16 @@ def parse_args():
         help="Filter criteria to add as `fq` param values. " +
              "Apply filters via the NCBI Virus UI and observe the network " +
              "activity to find the desired filter string.")
+    parser.add_argument("--fields", required=False, nargs="*",
+        help="Metadata fields to add as `fl` param values. " +
+             "Expected to be formatted as <output_column_name>:<ncbi_virus_field_name>. " +
+             "Add columns via the NCBI Virus UI and observe the network" +
+             "activity to find the desired NCBI Virus field name.")
     return parser.parse_args()
 
-def build_query_url(ncbi_taxon_id: str, filters: Optional[List[str]]=None):
+def build_query_url(ncbi_taxon_id: str,
+                    filters: Optional[List[str]]=None,
+                    fields: Optional[List[str]]=None):
     """
     Generate URL to download all viral sequences and their curated metadata
     from GenBank via NCBI Virus.
@@ -48,7 +55,7 @@ def build_query_url(ncbi_taxon_id: str, filters: Optional[List[str]]=None):
         'cmd': 'download',
         'dlfmt': 'csv',
         'fl': ','.join(
-            ':'.join(names) for names in [
+            [':'.join(names) for names in [
                 # Pairs of (output column name, source data field).
                 ('genbank_accession',       'id'),
                 ('genbank_accession_rev',   'AccVer_s'),
@@ -69,7 +76,7 @@ def build_query_url(ncbi_taxon_id: str, filters: Optional[List[str]]=None):
                 ('submitting_organization', 'SubmitterAffilFull_s'),
                 ('publications',            'PubMed_csv'),
                 ('sequence',                'Nucleotide_seq'),
-            ]
+            ]] + (fields or [])
         ),
 
         # Stable sort with GenBank accessions.
@@ -89,6 +96,7 @@ def main():
     build_query_url(
         ncbi_taxon_id=args.ncbi_taxon_id,
         filters=args.filters,
+        fields=args.fields
     )
 
 if __name__ == '__main__':
