@@ -74,6 +74,7 @@ NCBI interaction scripts that are useful for fetching public metadata and sequen
 - [fetch-from-ncbi-entrez](fetch-from-ncbi-entrez) - Fetch metadata and nucleotide sequences from [NCBI Entrez](https://www.ncbi.nlm.nih.gov/books/NBK25501/) and output to a GenBank file.
   Useful for pathogens with metadata and annotations in custom fields that are not part of the standard [NCBI Virus](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/) or [NCBI Datasets](https://www.ncbi.nlm.nih.gov/datasets/) outputs.
 - [ncbi-virus-url](ncbi-virus-url) - Generates the URL to download metadata and sequences from NCBI Virus as a single CSV file.
+- [csv-to-ndjson](csv-to-ndjson) - Converts CSV file to NDJSON file with a hard-coded 200MiB field size limit to accommodate sequences in the NCBI Virus download.
 
 Potential Nextstrain CLI scripts
 
