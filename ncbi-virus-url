@@ -28,8 +28,7 @@ def parse_args():
     parser.add_argument("--fields", required=False, nargs="*",
         help="Metadata fields to add as `fl` param values. " +
              "Expected to be formatted as <output_column_name>:<ncbi_virus_field_name>. " +
-             "Add columns via the NCBI Virus UI and observe the network" +
-             "activity to find the desired NCBI Virus field name.")
+             "See docs/ncbi-virus-all-fields-example.json for the available NCBI Virus fields.")
     return parser.parse_args()
 
 def build_query_url(ncbi_taxon_id: str,
