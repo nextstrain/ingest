@@ -9,12 +9,31 @@ bin="$(dirname "$0")"
 
 
 main() {
+    declare -a filters
+    declare -a fields
+
+    for arg; do
+        case "$arg" in
+            --filter=*)
+                filters+=("${arg#*=}")
+                shift;;
+            --field=*)
+                fields+=("${arg#*=}")
+                shift;;
+            *)
+                break;;
+        esac
+    done
+
     local ncbi_taxon_id="${1:?NCBI taxon id is required.}"
-    fetch "$ncbi_taxon_id" | "$bin"/csv-to-ndjson
+    local ncbi_virus_url
+    ncbi_virus_url="$("$bin"/ncbi-virus-url --ncbi-taxon-id "$ncbi_taxon_id" --filters "${filters[@]}" --fields "${fields[@]}")"
+
+    fetch "$ncbi_virus_url" | "$bin"/csv-to-ndjson
 }
 
 fetch() {
-    curl "$("$bin"/genbank-url --ncbi-taxon-id "$1")" \
+    curl "$1" \
         --fail --silent --show-error --http1.1 \
         --header 'User-Agent: https://github.com/nextstrain/monkeypox (hello@nextstrain.org)'
 }
