@@ -1,4 +1,16 @@
 #!/bin/bash
+# usage: fetch-from-ncbi-virus [options] <ncbi_taxon_id>
+#
+# Fetch metadata and nucleotide sequences from [NCBI Virus](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/)
+# and output NDJSON records to stdout.
+#
+# options:
+#
+#   --filter=<filter_query>                                 Filter criteria to add as `fq` param values for the NCBI Virus URL
+#                                                           May be specified multiple times.
+#
+#   --field=<output_column_name>:<ncbi_virus_field_name>    Metadata fields to add as `fl` param values for the NCBI Virus URL
+#                                                           May be specified multiple times.
 #
 # Originally copied from "bin/fetch-from-genbank" in nextstrain/ncov-ingest:
 #   https://github.com/nextstrain/ncov-ingest/blob/2a5f255329ee5bdf0cabc8b8827a700c92becbe4/bin/fetch-from-genbank
