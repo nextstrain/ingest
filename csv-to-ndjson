@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 Convert CSV on stdin to NDJSON on stdout.
+usage: `cat dummy.csv | ./csv-to-ndjson > dummy.ndjson`
 """
 import csv
 import json
