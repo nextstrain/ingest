@@ -1,5 +1,5 @@
 #!/bin/bash
-# usage: fetch-from-ncbi-virus [options] <ncbi_taxon_id>
+# usage: fetch-from-ncbi-virus [options] <ncbi_taxon_id> <github_repo>
 #
 # Fetch metadata and nucleotide sequences from [NCBI Virus](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/)
 # and output NDJSON records to stdout.
@@ -38,16 +38,18 @@ main() {
     done
 
     local ncbi_taxon_id="${1:?NCBI taxon id is required.}"
+    local github_repo="${2:?A GitHub repository with owner and repository name is required as the second argument}"
+
     local ncbi_virus_url
     ncbi_virus_url="$("$bin"/ncbi-virus-url --ncbi-taxon-id "$ncbi_taxon_id" --filters "${filters[@]}" --fields "${fields[@]}")"
 
-    fetch "$ncbi_virus_url" | "$bin"/csv-to-ndjson
+    fetch "$ncbi_virus_url" "$github_repo" | "$bin"/csv-to-ndjson
 }
 
 fetch() {
     curl "$1" \
         --fail --silent --show-error --http1.1 \
-        --header 'User-Agent: https://github.com/nextstrain/monkeypox (hello@nextstrain.org)'
+        --header "User-Agent: https://github.com/$2 (hello@nextstrain.org)"
 }
 
 main "$@"
