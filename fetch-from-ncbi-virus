@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # usage: fetch-from-ncbi-virus [options] <ncbi_taxon_id> <github_repo>
 #
 # Fetch metadata and nucleotide sequences from [NCBI Virus](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/)
