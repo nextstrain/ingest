@@ -97,3 +97,16 @@ Potential augur curate scripts
 - [transform-authors](transform-authors) - Abbreviates full author lists to '<first author> et al.'
 - [transform-field-names](transform-field-names) - Rename fields of NDJSON records
 - [transform-genbank-location](transform-genbank-location) - Parses `location` field with the expected pattern `"<country_value>[:<region>][, <locality>]"` based on [GenBank's country field](https://www.ncbi.nlm.nih.gov/genbank/collab/country/)
+
+## Software requirements
+
+Some scripts may require Bash ≥4. If you are running these scripts on macOS, the builtin Bash (`/bin/bash`) does not meet this requirement. You can install [Homebrew's Bash](https://formulae.brew.sh/formula/bash) which is more up to date.
+
+## Testing
+
+Most scripts are untested within this repo, relying on "testing in production". That is the only practical testing option for some scripts such as the ones interacting with S3 and Slack.
+
+For more locally testable scripts, Cram-style functional tests live in `tests` and are run as part of CI. To run these locally,
+
+1. Download Cram: `pip install cram`
+2. Run the tests: `cram tests/`
