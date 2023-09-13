@@ -115,6 +115,7 @@ Potential augur curate scripts
 - [transform-field-names](transform-field-names) - Rename fields of NDJSON records
 - [transform-genbank-location](transform-genbank-location) - Parses `location` field with the expected pattern `"<country_value>[:<region>][, <locality>]"` based on [GenBank's country field](https://www.ncbi.nlm.nih.gov/genbank/collab/country/)
 - [transform-strain-names](transform-strain-names) - Ordered search for strain names across several fields.
+- [join-metadata-and-clades.py](join-metadata-and-clades.py) - Joins nextclade TSV results with a pathogen metadata TSV file.
 
 ## Software requirements
 
