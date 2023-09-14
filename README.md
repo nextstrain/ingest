@@ -72,10 +72,9 @@ Scripts for supporting ingest workflow automation that don’t really belong in 
 NCBI interaction scripts that are useful for fetching public metadata and sequences.
 
 - [fetch-from-ncbi-entrez](fetch-from-ncbi-entrez) - Fetch metadata and nucleotide sequences from [NCBI Entrez](https://www.ncbi.nlm.nih.gov/books/NBK25501/) and output to a GenBank file.
-  Useful for pathogens with metadata and annotations in custom fields that are not part of the standard [NCBI Virus](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/) or [NCBI Datasets](https://www.ncbi.nlm.nih.gov/datasets/) outputs.
-- [fetch-from-ncbi-virus](fetch-from-ncbi-virus) - Fetch metadata and nucleotide sequences from [NCBI Virus](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/) and output NDJSON records to stdout.
-- [ncbi-virus-url](ncbi-virus-url) - Generates the URL to download metadata and sequences from NCBI Virus as a single CSV file.
-- [csv-to-ndjson](csv-to-ndjson) - Converts CSV file to NDJSON file with a hard-coded 200MiB field size limit to accommodate sequences in the NCBI Virus download.
+  Useful for pathogens with metadata and annotations in custom fields that are not part of the standard [NCBI Datasets](https://www.ncbi.nlm.nih.gov/datasets/) outputs.
+
+Historically, some pathogen repos used the undocumented NCBI Virus API through [fetch-from-ncbi-virus](https://github.com/nextstrain/ingest/blob/c97df238518171c2b1574bec0349a55855d1e7a7/fetch-from-ncbi-virus) to fetch data. However we've opted to drop the NCBI Virus scripts due to https://github.com/nextstrain/ingest/issues/18.
 
 Potential Nextstrain CLI scripts
 
