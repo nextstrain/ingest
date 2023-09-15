@@ -4,8 +4,6 @@ import re
 import sys
 import pandas as pd
 
-VALUE_MISSING_DATA = '?'
-
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Joins metadata file with Nextclade clade output",
