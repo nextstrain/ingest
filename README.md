@@ -25,6 +25,24 @@ Any future updates of ingest scripts can be pulled in with:
 git subrepo pull ingest/vendored
 ```
 
+> **Warning**
+> Beware of rebasing/dropping the parent commit of a `git subrepo` update
+
+`git subrepo` relies on metadata in the `ingest/vendored/.gitrepo` file,
+which includes the hash for the parent commit in the pathogen repos.
+If this hash no longer exists in the commit history, there will be errors when
+running future `git subrepo pull` commands.
+
+If you run into an error similar to the following:
+```
+$ git subrepo pull ingest/vendored
+git-subrepo: Command failed: 'git branch subrepo/ingest/vendored '.
+fatal: not a valid object name: ''
+```
+Check the parent commit hash in the `ingest/vendored/.gitrepo` file and make
+sure the commit exists in the commit history. Update to the appropriate parent
+commit hash if needed.
+
 ## History
 
 Much of this tooling originated in
