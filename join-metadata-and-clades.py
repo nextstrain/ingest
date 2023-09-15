@@ -22,10 +22,6 @@ column_map = {
     "qc.stopCodons.status": "QC_stop_codons",
     "frameShifts": "frame_shifts",
     "isReverseComplement": "is_reverse_complement",
-#    "deletions": "deletions",
-#    "insertions": "insertions"
-#    "substitutions": "substitutions",
-#    "aaSubstitutions": "aaSubstitutions"
 }
 
 
