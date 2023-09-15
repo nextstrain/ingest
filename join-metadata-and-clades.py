@@ -4,7 +4,6 @@ import re
 import sys
 import pandas as pd
 
-NEXTCLADE_JOIN_COLUMN_NAME = 'seqName'
 VALUE_MISSING_DATA = '?'
 
 def parse_args():
@@ -14,6 +13,7 @@ def parse_args():
     parser.add_argument("--metadata")
     parser.add_argument("--nextclade")
     parser.add_argument("--id-field")
+    parser.add_argument("--nextclade-id-field", default='seqName')
     parser.add_argument("--nextclade-field-map", nargs="+",
         help="Fields names in the nextclade TSV file mapped to new field names, " +
              "formatted as '{old_field_name}={new_field_name}'.",
@@ -33,7 +33,7 @@ def main():
         old_field, new_field = field.split("=")
         column_map[old_field] = new_field
 
-    clades = pd.read_csv(args.nextclade, index_col=NEXTCLADE_JOIN_COLUMN_NAME,
+    clades = pd.read_csv(args.nextclade, index_col=args.nextclade_id_field,
                          sep='\t', low_memory=False, na_filter = False) \
             .rename(columns=column_map)
     
