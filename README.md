@@ -12,6 +12,9 @@ Some tools may only live here temporarily before finding a permanent home in
 Nextstrain maintained pathogen repos will use [`git subrepo`](https://github.com/ingydotnet/git-subrepo) to vendor ingest scripts.
 (See discussion on this decision in https://github.com/nextstrain/ingest/issues/3)
 
+For a list of Nextstrain repos that are currently using this method, use [this
+GitHub code search](https://github.com/search?type=code&q=org%3Anextstrain+subrepo+%22remote+%3D+https%3A%2F%2Fgithub.com%2Fnextstrain%2Fingest%22).
+
 If you don't already have `git subrepo` installed, follow the [git subrepo installation instructions](https://github.com/ingydotnet/git-subrepo#installation).
 Then add the latest ingest scripts to the pathogen repo by running:
 
