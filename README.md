@@ -57,14 +57,14 @@ commit hash if needed.
 
 Much of this tooling originated in
 [ncov-ingest](https://github.com/nextstrain/ncov-ingest) and was passaged thru
-[monkeypox's ingest/](https://github.com/nextstrain/monkeypox/tree/@/ingest/).
-It subsequently proliferated from [monkeypox][] to other pathogen repos
-([rsv][], [zika][], [dengue][], [hepatitisB][], [forecasts-ncov][]) primarily
-thru copying.  To [counter that
+[mpox's ingest/](https://github.com/nextstrain/mpox/tree/@/ingest/). It
+subsequently proliferated from [mpox][] to other pathogen repos ([rsv][],
+[zika][], [dengue][], [hepatitisB][], [forecasts-ncov][]) primarily thru
+copying.  To [counter that
 proliferation](https://bedfordlab.slack.com/archives/C7SDVPBLZ/p1688577879947079),
 this repo was made.
 
-[monkeypox]: https://github.com/nextstrain/monkeypox
+[mpox]: https://github.com/nextstrain/mpox
 [rsv]: https://github.com/nextstrain/rsv
 [zika]: https://github.com/nextstrain/zika/pull/24
 [dengue]: https://github.com/nextstrain/dengue/pull/10
