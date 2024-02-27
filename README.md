@@ -2,7 +2,7 @@
 
 Shared internal tooling for pathogen data ingest.  Used by our individual
 pathogen repos which produce Nextstrain builds.  Expected to be vendored by
-each pathogen repo using `git subtree`.
+each pathogen repo using `git subrepo`.
 
 Some tools may only live here temporarily before finding a permanent home in
 `augur curate` or Nextstrain CLI.  Others may happily live out their days here.
