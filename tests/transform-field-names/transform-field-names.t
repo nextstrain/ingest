@@ -1,12 +1,11 @@
 Verify behavior of `transform-field-names`
 
 If the `--field-map` includes a old field name that is the same as the new field
-name, this prints a loud warning.
+name, this should be no-op.
 
   $ echo '{"strain": "A"}' \
   >  | $TESTDIR/../../transform-field-names \
   >      --field-map "strain=strain"
-  WARNING: skipping rename of strain because record already has a field named strain.
   {"strain":"A"}
 
 If the `--field-map` overwrites an existing field, then skip renaming and
