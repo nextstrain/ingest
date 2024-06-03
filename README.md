@@ -144,13 +144,14 @@ For more locally testable scripts, Cram-style functional tests live in `tests` a
 This repo is configured to use [pre-commit](https://pre-commit.com),
 to help automatically catch common coding errors and syntax issues
 with changes before they are committed to the repo.
-.
+
 If you will be writing new code or otherwise working within this repo,
 please do the following to get started:
 
-1. install `pre-commit` by running either `python -m pip install
-   pre-commit` or `brew install pre-commit`, depending on your
-   preferred package management solution
+1. [install `pre-commit`](https://pre-commit.com/#install) by running
+   either `python -m pip install pre-commit` or `brew install
+   pre-commit`, depending on your preferred package management
+   solution
 2. install the local git hooks by running `pre-commit install` from
    the root of the repo
 3. when problems are detected, correct them in your local working tree
