@@ -125,11 +125,6 @@ Some scripts may require Bash ≥4. If you are running these scripts on macOS, t
 
 Most scripts are untested within this repo, relying on "testing in production". That is the only practical testing option for some scripts such as the ones interacting with S3 and Slack.
 
-For more locally testable scripts, Cram-style functional tests live in `tests` and are run as part of CI. To run these locally,
-
-1. Download Cram: `pip install cram`
-2. Run the tests: `cram tests/`
-
 ## Working on this repo
 
 This repo is configured to use [pre-commit](https://pre-commit.com),
