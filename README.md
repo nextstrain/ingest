@@ -117,15 +117,6 @@ Potential Nextstrain CLI scripts
 - [download-from-s3](download-from-s3) - Download file from AWS S3 bucket with decompression based on file extension in S3 URL.
   Skips download if the local file already exists and has a hash identical to the S3 object's metadata `sha256sum`.
 
-Potential augur curate scripts
-
-- [apply-geolocation-rules](apply-geolocation-rules) - Applies user curated geolocation rules to NDJSON records
-- [merge-user-metadata](merge-user-metadata) - Merges user annotations with NDJSON records
-- [transform-authors](transform-authors) - Abbreviates full author lists to '<first author> et al.'
-- [transform-field-names](transform-field-names) - Rename fields of NDJSON records
-- [transform-genbank-location](transform-genbank-location) - Parses `location` field with the expected pattern `"<country_value>[:<region>][, <locality>]"` based on [GenBank's country field](https://www.ncbi.nlm.nih.gov/genbank/collab/country/)
-- [transform-strain-names](transform-strain-names) - Ordered search for strain names across several fields.
-
 ## Software requirements
 
 Some scripts may require Bash ≥4. If you are running these scripts on macOS, the builtin Bash (`/bin/bash`) does not meet this requirement. You can install [Homebrew's Bash](https://formulae.brew.sh/formula/bash) which is more up to date.
