@@ -31,17 +31,37 @@ text="${1:?Some message text is required.}"
 
 if [[ "$upload" == 1 ]]; then
     echo "Uploading data to Slack with the message: $text"
-    curl https://slack.com/api/files.upload \
+
+    upload_file="$(mktemp -t upload-file-XXXXXX)"
+    trap "rm -f '$upload_file'" EXIT
+
+    cat /dev/stdin > "$upload_file"
+    length=$(printf '%d' "$(<"$upload_file" wc -c)")
+
+    upload_info=$(curl https://slack.com/api/files.getUploadURLExternal \
         --header "Authorization: Bearer $SLACK_TOKEN" \
-        --form-string channels="$SLACK_CHANNELS" \
-        --form-string title="$text" \
-        --form-string filename="$text" \
+        --form filename="$text" \
+        --form length="$length" \
+        --fail --silent --show-error \
+        --http1.1 )
+
+    upload_url="$(jq -r .upload_url <<< "$upload_info")"
+    curl "$upload_url" \
+        --form filename="$text" \
+        --form file="@$upload_file" \
+        --fail --silent --show-error \
+        --http1.1 > /dev/null
+
+    files_uploaded="$(jq -r "[{id: .file_id}]" <<< "$upload_info")"
+    curl -X POST https://slack.com/api/files.completeUploadExternal \
+        --header "Authorization: Bearer $SLACK_TOKEN" \
+        --form-string channel_id="$SLACK_CHANNELS" \
         --form-string thread_ts="$thread_ts" \
-        --form file=@/dev/stdin \
-        --form filetype=text \
+        --form-string files="$files_uploaded" \
         --fail --silent --show-error \
         --http1.1 \
         --output "$output"
+
 else
     echo "Posting Slack message: $text"
     curl https://slack.com/api/chat.postMessage \
