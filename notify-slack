@@ -8,6 +8,7 @@ upload=0
 output=/dev/null
 thread_ts=""
 broadcast=0
+fail_on_error=0
 args=()
 
 for arg; do
@@ -20,6 +21,8 @@ for arg; do
             thread_ts="${arg#*=}";;
         --broadcast)
             broadcast=1;;
+        --fail-on-error)
+            fail_on_error=1;;
         *)
             args+=("$arg");;
     esac
@@ -78,6 +81,11 @@ send_slack_message() {
 }
 
 if ! send_slack_message; then
-    echo "Sending Slack message failed, but exiting with success anyway."
-    exit 0
+    if [[ "$fail_on_error" == 1 ]]; then
+        echo "Sending Slack message failed"
+        exit 1
+    else
+        echo "Sending Slack message failed, but exiting with success anyway."
+        exit 0
+    fi
 fi
