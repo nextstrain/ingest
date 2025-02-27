@@ -77,4 +77,7 @@ send_slack_message() {
     fi
 }
 
-send_slack_message
+if ! send_slack_message; then
+    echo "Sending Slack message failed, but exiting with success anyway."
+    exit 0
+fi
