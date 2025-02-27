@@ -8,6 +8,7 @@ upload=0
 output=/dev/null
 thread_ts=""
 broadcast=0
+fail_on_error=0
 args=()
 
 for arg; do
@@ -20,6 +21,8 @@ for arg; do
             thread_ts="${arg#*=}";;
         --broadcast)
             broadcast=1;;
+        --fail-on-error)
+            fail_on_error=1;;
         *)
             args+=("$arg");;
     esac
@@ -29,48 +32,60 @@ set -- "${args[@]}"
 
 text="${1:?Some message text is required.}"
 
-if [[ "$upload" == 1 ]]; then
-    echo "Uploading data to Slack with the message: $text"
+send_slack_message() {
+    if [[ "$upload" == 1 ]]; then
+        echo "Uploading data to Slack with the message: $text"
 
-    upload_file="$(mktemp -t upload-file-XXXXXX)"
-    trap "rm -f '$upload_file'" EXIT
+        upload_file="$(mktemp -t upload-file-XXXXXX)"
+        trap "rm -f '$upload_file'" EXIT
 
-    cat /dev/stdin > "$upload_file"
-    length=$(printf '%d' "$(<"$upload_file" wc -c)")
+        cat /dev/stdin > "$upload_file"
+        length=$(printf '%d' "$(<"$upload_file" wc -c)")
 
-    upload_info=$(curl https://slack.com/api/files.getUploadURLExternal \
-        --header "Authorization: Bearer $SLACK_TOKEN" \
-        --form-string filename="$text" \
-        --form-string length="$length" \
-        --fail --silent --show-error \
-        --http1.1 )
+        upload_info=$(curl https://slack.com/api/files.getUploadURLExternal \
+            --header "Authorization: Bearer $SLACK_TOKEN" \
+            --form-string filename="$text" \
+            --form-string length="$length" \
+            --fail --silent --show-error \
+            --http1.1 )
 
-    upload_url="$(jq -r .upload_url <<< "$upload_info")"
-    curl "$upload_url" \
-        --form-string filename="$text" \
-        --form file="@$upload_file" \
-        --fail --silent --show-error \
-        --http1.1 > /dev/null
+        upload_url="$(jq -r .upload_url <<< "$upload_info")"
+        curl "$upload_url" \
+            --form-string filename="$text" \
+            --form file="@$upload_file" \
+            --fail --silent --show-error \
+            --http1.1 > /dev/null
 
-    files_uploaded="$(jq -r "[{id: .file_id}]" <<< "$upload_info")"
-    curl -X POST https://slack.com/api/files.completeUploadExternal \
-        --header "Authorization: Bearer $SLACK_TOKEN" \
-        --form-string channel_id="$SLACK_CHANNELS" \
-        --form-string thread_ts="$thread_ts" \
-        --form-string files="$files_uploaded" \
-        --fail --silent --show-error \
-        --http1.1 \
-        --output "$output"
+        files_uploaded="$(jq -r "[{id: .file_id}]" <<< "$upload_info")"
+        curl -X POST https://slack.com/api/files.completeUploadExternal \
+            --header "Authorization: Bearer $SLACK_TOKEN" \
+            --form-string channel_id="$SLACK_CHANNELS" \
+            --form-string thread_ts="$thread_ts" \
+            --form-string files="$files_uploaded" \
+            --fail --silent --show-error \
+            --http1.1 \
+            --output "$output"
 
-else
-    echo "Posting Slack message: $text"
-    curl https://slack.com/api/chat.postMessage \
-        --header "Authorization: Bearer $SLACK_TOKEN" \
-        --form-string channel="$SLACK_CHANNELS" \
-        --form-string text="$text" \
-        --form-string thread_ts="$thread_ts" \
-        --form-string reply_broadcast="$broadcast" \
-        --fail --silent --show-error \
-        --http1.1 \
-        --output "$output"
+    else
+        echo "Posting Slack message: $text"
+        curl https://slack.com/api/chat.postMessage \
+            --header "Authorization: Bearer $SLACK_TOKEN" \
+            --form-string channel="$SLACK_CHANNELS" \
+            --form-string text="$text" \
+            --form-string thread_ts="$thread_ts" \
+            --form-string reply_broadcast="$broadcast" \
+            --fail --silent --show-error \
+            --http1.1 \
+            --output "$output"
+    fi
+}
+
+if ! send_slack_message; then
+    if [[ "$fail_on_error" == 1 ]]; then
+        echo "Sending Slack message failed"
+        exit 1
+    else
+        echo "Sending Slack message failed, but exiting with success anyway."
+        exit 0
+    fi
 fi
