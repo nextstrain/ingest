@@ -40,14 +40,14 @@ if [[ "$upload" == 1 ]]; then
 
     upload_info=$(curl https://slack.com/api/files.getUploadURLExternal \
         --header "Authorization: Bearer $SLACK_TOKEN" \
-        --form filename="$text" \
-        --form length="$length" \
+        --form-string filename="$text" \
+        --form-string length="$length" \
         --fail --silent --show-error \
         --http1.1 )
 
     upload_url="$(jq -r .upload_url <<< "$upload_info")"
     curl "$upload_url" \
-        --form filename="$text" \
+        --form-string filename="$text" \
         --form file="@$upload_file" \
         --fail --silent --show-error \
         --http1.1 > /dev/null
