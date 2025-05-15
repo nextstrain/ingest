@@ -117,6 +117,12 @@ Potential Nextstrain CLI scripts
 - [download-from-s3](scripts/download-from-s3) - Download file from AWS S3 bucket with decompression based on file extension in S3 URL.
   Skips download if the local file already exists and has a hash identical to the S3 object's metadata `sha256sum`.
 
+## Snakemake
+
+Snakemake workflow functions that are shared across many pathogen workflows that don’t really belong in any of our existing tools.
+
+- [config.smk](snakemake/config.smk) - Shared functions for parsing workflow configs.
+
 ## Software requirements
 
 Some scripts may require Bash ≥4. If you are running these scripts on macOS, the builtin Bash (`/bin/bash`) does not meet this requirement. You can install [Homebrew's Bash](https://formulae.brew.sh/formula/bash) which is more up to date.
