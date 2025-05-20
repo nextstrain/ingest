@@ -1,6 +1,6 @@
-# ingest
+# shared
 
-Shared internal tooling for pathogen data ingest.  Used by our individual
+Shared internal tooling for pathogen workflows.  Used by our individual
 pathogen repos which produce Nextstrain builds.  Expected to be vendored by
 each pathogen repo using `git subrepo`.
 
@@ -9,47 +9,47 @@ Some tools may only live here temporarily before finding a permanent home in
 
 ## Vendoring
 
-Nextstrain maintained pathogen repos will use [`git subrepo`](https://github.com/ingydotnet/git-subrepo) to vendor ingest scripts.
-(See discussion on this decision in https://github.com/nextstrain/ingest/issues/3)
+Nextstrain maintained pathogen repos will use [`git subrepo`](https://github.com/ingydotnet/git-subrepo) to vendor shared scripts.
+(See discussion on this decision in https://github.com/nextstrain/shared/issues/3)
 
 For a list of Nextstrain repos that are currently using this method, use [this
 GitHub code search](https://github.com/search?type=code&q=org%3Anextstrain+subrepo+%22remote+%3D+https%3A%2F%2Fgithub.com%2Fnextstrain%2Fingest%22).
 
 If you don't already have `git subrepo` installed, follow the [git subrepo installation instructions](https://github.com/ingydotnet/git-subrepo#installation).
-Then add the latest ingest scripts to the pathogen repo by running:
+Then add the latest shared scripts to the pathogen repo by running:
 
 ```
-git subrepo clone https://github.com/nextstrain/ingest ingest/vendored
+git subrepo clone https://github.com/nextstrain/shared shared/vendored
 ```
 
-Any future updates of ingest scripts can be pulled in with:
+Any future updates of sahred scripts can be pulled in with:
 
 ```
-git subrepo pull ingest/vendored
+git subrepo pull shared/vendored
 ```
 
 If you run into merge conflicts and would like to pull in a fresh copy of the
-latest ingest scripts, pull with the `--force` flag:
+latest shared scripts, pull with the `--force` flag:
 
 ```
-git subrepo pull ingest/vendored --force
+git subrepo pull shared/vendored --force
 ```
 
 > **Warning**
 > Beware of rebasing/dropping the parent commit of a `git subrepo` update
 
-`git subrepo` relies on metadata in the `ingest/vendored/.gitrepo` file,
+`git subrepo` relies on metadata in the `shared/vendored/.gitrepo` file,
 which includes the hash for the parent commit in the pathogen repos.
 If this hash no longer exists in the commit history, there will be errors when
 running future `git subrepo pull` commands.
 
 If you run into an error similar to the following:
 ```
-$ git subrepo pull ingest/vendored
-git-subrepo: Command failed: 'git branch subrepo/ingest/vendored '.
+$ git subrepo pull shared/vendored
+git-subrepo: Command failed: 'git branch subrepo/shared/vendored '.
 fatal: not a valid object name: ''
 ```
-Check the parent commit hash in the `ingest/vendored/.gitrepo` file and make
+Check the parent commit hash in the `shared/vendored/.gitrepo` file and make
 sure the commit exists in the commit history. Update to the appropriate parent
 commit hash if needed.
 
@@ -84,7 +84,7 @@ approach to "ingest" has been discussed in various internal places, including:
 
 ## Scripts
 
-Scripts for supporting ingest workflow automation that don’t really belong in any of our existing tools.
+Scripts for supporting workflow automation that don’t really belong in any of our existing tools.
 
 - [notify-on-diff](scripts/notify-on-diff) - Send Slack message with diff of a local file and an S3 object
 - [notify-on-job-fail](scripts/notify-on-job-fail) - Send Slack message with details about failed workflow job on GitHub Actions and/or AWS Batch
@@ -102,7 +102,7 @@ NCBI interaction scripts that are useful for fetching public metadata and sequen
 - [fetch-from-ncbi-entrez](scripts/fetch-from-ncbi-entrez) - Fetch metadata and nucleotide sequences from [NCBI Entrez](https://www.ncbi.nlm.nih.gov/books/NBK25501/) and output to a GenBank file.
   Useful for pathogens with metadata and annotations in custom fields that are not part of the standard [NCBI Datasets](https://www.ncbi.nlm.nih.gov/datasets/) outputs.
 
-Historically, some pathogen repos used the undocumented NCBI Virus API through [fetch-from-ncbi-virus](https://github.com/nextstrain/ingest/blob/c97df238518171c2b1574bec0349a55855d1e7a7/fetch-from-ncbi-virus) to fetch data. However we've opted to drop the NCBI Virus scripts due to https://github.com/nextstrain/ingest/issues/18.
+Historically, some pathogen repos used the undocumented NCBI Virus API through [fetch-from-ncbi-virus](https://github.com/nextstrain/shared/blob/c97df238518171c2b1574bec0349a55855d1e7a7/fetch-from-ncbi-virus) to fetch data. However we've opted to drop the NCBI Virus scripts due to https://github.com/nextstrain/shared/issues/18.
 
 Potential Nextstrain CLI scripts
 
