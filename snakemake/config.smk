@@ -66,7 +66,9 @@ def resolve_config_path(path: str, other_prefixes: Optional[List[str]] = None) -
                 checked_paths.append(prefixed_path)
 
         raise InvalidConfigError(
-            "Unable to resolve config provided path. Checked for the following files:\n" + \
+            f"Unable to resolve the config-provided path {path!r}, " + \
+            f"expanded to {expanded_path!r} after filling in wildcards. " + \
+            "Checked for the following files:\n" + \
             "\n".join("\t" + f"{index + 1}. {path!r}" for index, path in enumerate(checked_paths)))
 
     return _resolve_config_path
