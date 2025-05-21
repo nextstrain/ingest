@@ -35,7 +35,12 @@ def resolve_config_path(path: str, other_prefixes: Optional[List[str]] = None) -
     global workflow
 
     def _resolve_config_path(wildcards):
-        expanded_path = expand(path, **wildcards)[0]
+        try:
+            expanded_path = expand(path, **wildcards)[0]
+        except snakemake.exceptions.WildcardError as e:
+            # str(e) looks like "No values given for wildcard 'subtypes'."
+            raise InvalidConfigError(f"resolve_config_path called with path {path!r} however {str(e)}")
+
         if os.path.exists(expanded_path):
             return expanded_path
 
