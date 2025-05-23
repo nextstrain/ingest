@@ -5,7 +5,7 @@ workflow configs.
 import os.path
 from collections.abc import Callable
 from snakemake.io import Wildcards
-from typing import Optional, List
+from typing import Optional
 from textwrap import dedent, indent
 
 
@@ -13,25 +13,20 @@ class InvalidConfigError(Exception):
     pass
 
 
-def resolve_config_path(path: str, other_prefixes: Optional[List[str]] = None) -> Callable[[Wildcards], str]:
+def resolve_config_path(path: str, defaults_dir: Optional[str] = None) -> Callable[[Wildcards], str]:
     """
-    Resolve a relative *path* given in a configuration value.
+    Resolve a relative *path* given in a configuration value. Will always try to
+    resolve *path* after expanding wildcards with Snakemake's `expand` functionality.
 
-    Resolves *path* as relative to the workflow's ``defaults/`` directory (i.e.
-    ``os.path.join(workflow.basedir, "defaults", path)``) if it doesn't exist
-    in the workflow's analysis directory (i.e. the current working
-    directory, or workdir, usually given by ``--directory`` (``-d``)).
+    Returns the path for the first existing file, checked in the following order:
+    1. relative to the analysis directory or workdir, usually given by ``--directory`` (``-d``)
+    2. relative to *defaults_dir* if it's provided
+    3. relative to the workflow's ``defaults/`` directory if *defaults_dir* is _not_ provided
 
     This behaviour allows a default configuration value to point to a default
     auxiliary file while also letting the file used be overridden either by
     setting an alternate file path in the configuration or by creating a file
     with the conventional name in the workflow's analysis directory.
-
-    Will always try to resolve *path* or the default path after expanding
-    wildcards with Snakemake's `expand` functionality.
-
-    If *other_prefixes* are provided, then will also try to resolve *path*
-    relative to the provided prefixes if the *path* and default path do not exist.
     """
     global workflow
 
@@ -56,31 +51,27 @@ def resolve_config_path(path: str, other_prefixes: Optional[List[str]] = None) -
         if os.path.exists(expanded_path):
             return expanded_path
 
-        # Special-case defaults/… for backwards compatibility with older
-        # configs.  We could achieve the same behaviour with a symlink
-        # (defaults/defaults → .) but that seems less clear.
-        if path.startswith("defaults/"):
-            defaults_path = os.path.join(workflow.basedir, expanded_path)
+        if defaults_dir:
+            defaults_path = os.path.join(defaults_dir, expanded_path)
         else:
-            defaults_path = os.path.join(workflow.basedir, "defaults", expanded_path)
+            # Special-case defaults/… for backwards compatibility with older
+            # configs.  We could achieve the same behaviour with a symlink
+            # (defaults/defaults → .) but that seems less clear.
+            if path.startswith("defaults/"):
+                defaults_path = os.path.join(workflow.basedir, expanded_path)
+            else:
+                defaults_path = os.path.join(workflow.basedir, "defaults", expanded_path)
 
         if os.path.exists(defaults_path):
             return defaults_path
 
-        checked_paths = [expanded_path, defaults_path]
-        if other_prefixes:
-            for prefix in other_prefixes:
-                prefixed_path = os.path.join(prefix, expanded_path)
+        raise InvalidConfigError(indent(dedent(f"""\
+            Unable to resolve the config-provided path {path!r},
+            expanded to {expanded_path!r} after filling in wildcards.
+            The workflow does not include the default file {defaults_path!r}.
 
-                if os.path.exists(prefixed_path):
-                    return prefixed_path
-
-                checked_paths.append(prefixed_path)
-
-        raise InvalidConfigError(
-            f"Unable to resolve the config-provided path {path!r}, " + \
-            f"expanded to {expanded_path!r} after filling in wildcards. " + \
-            "Checked for the following files:\n" + \
-            "\n".join("\t" + f"{index + 1}. {path!r}" for index, path in enumerate(checked_paths)))
+            Hint: Check that the file {expanded_path!r} exists in your analysis
+            directory or remove the config param to use the workflow defaults.
+            """), " " * 4))
 
     return _resolve_config_path
