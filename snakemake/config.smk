@@ -6,6 +6,7 @@ import os.path
 from collections.abc import Callable
 from snakemake.io import Wildcards
 from typing import Optional, List
+from textwrap import dedent, indent
 
 
 class InvalidConfigError(Exception):
@@ -38,8 +39,19 @@ def resolve_config_path(path: str, other_prefixes: Optional[List[str]] = None) -
         try:
             expanded_path = expand(path, **wildcards)[0]
         except snakemake.exceptions.WildcardError as e:
-            # str(e) looks like "No values given for wildcard 'subtypes'."
-            raise InvalidConfigError(f"resolve_config_path called with path {path!r} however {str(e)}")
+            available_wildcards = "\n".join(f"  - {wildcard}" for wildcard in wildcards)
+            raise snakemake.exceptions.WildcardError(indent(dedent(f"""\
+                {str(e)}
+
+                However, resolve_config_path({{path}}) requires the wildcard.
+
+                Wildcards available for this path are:
+
+                {{available_wildcards}}
+
+                Hint: Check that the config path value does not misspell the wildcard name
+                and that the rule actually uses the wildcard name.
+                """.lstrip("\n").rstrip()).format(path=repr(path), available_wildcards=available_wildcards), " " * 4))
 
         if os.path.exists(expanded_path):
             return expanded_path
